@@ -1,8 +1,8 @@
 var stations = [];
 document.getElementById("button").addEventListener("click", onButtonClick);
 document.getElementById("dataButton").addEventListener("click", onDataClick);
-document.getElementById("button1").addEventListener("click", onButtonClicktest);
-document.getElementById("button2").addEventListener("click", onButtonClick2);
+//document.getElementById("button1").addEventListener("click", onButtonClicktest);
+//document.getElementById("button2").addEventListener("click", onButtonClick2);
 document.getElementById("buttona").addEventListener("click", onButtonClicka);
 document.getElementById("buttonb").addEventListener("click", onButtonClickb);
 document.getElementById("buttonc").addEventListener("click", onButtonClickc);
@@ -26,6 +26,7 @@ lst = ["a", "b"];
 //var oldAlarms = [{station: "Hala 1", alarm_type: "LOW", name: "Temperatura", alarm_sensor_id: 1, timestamp: "2020-04-22 10:05:09"}, {station: "Hala 2", alarm_type: "ALARM_TYPE_2", name: "Temperatura", alarm_sensor_id: 2, timestamp: "2020-04-22 10:05:09"}, {station: "Hala 1", alarm_type: "HIGH", alarm_sensor_id: 3, name: "Wilgotność", timestamp: "2020-04-22 10:05:09"}];
 var alarms = [];
 var alarmsV = [];
+var stationIDs = [];
 var oldAlarms = [];
 var stationID = null;
 // IMAGE CHANGE
@@ -297,6 +298,7 @@ function createStations(station) {
 		/*if(res == 1)
 			values = [];*/
 	}
+	stationIDs = [document.querySelector('[src="0"]').id, document.querySelector('[src="1"]').id];
 }
 
 function onButtonClicka() {
@@ -658,6 +660,24 @@ function onButtonAlarm1(i) {
 	console.log("DT " + i);
 	current = 1;
 	modal.style.display = "none";
+	eleClick = true;
+	//current = 0;
+	//onButtonClickd(this.id);
+	stationID = document.querySelector('[src="0"]').id;
+	
+	/*eleClick = true;
+		current = 0;
+		onButtonClickd(this.id);
+		stationID = this.id;
+		console.log("SSD: " + this.id);
+		
+		if(this.id == document.querySelector('[src="0"]').id) {
+			current = 1;
+			nam = stations[0].title;
+		} else if(this.id == document.querySelector('[src="1"]').id) {
+			current = 2;
+			nam = stations[1].title;
+		}*/
 }
 function onButtonAlarm2(i) {
 	//onEleClick();
@@ -666,6 +686,11 @@ function onButtonAlarm2(i) {
 	current = 2;
 	modal.style.display = "none";
 	nam  =stations[1].title;
+	eleClick = true;
+	//current = 0;
+	stationID = document.querySelector('[src="1"]').id;
+	//onButtonClickd(this.id);
+	//stationID = this.id;
 }
 
 function myTimer(socket) {
@@ -725,6 +750,7 @@ function dataPack(temp1) {
 function alarmTime() {
 	tout = false;
 }
+
 var tout = false;
 var y = 0;
 var values = [];
@@ -736,6 +762,10 @@ var temp2 = [];
 var size2 = 0;
 var res = 0;
 function openSocket() {
+	
+	var ii = 0;
+
+
 	socket = new WebSocket('ws://127.0.0.1:50093'); 
 socket.onopen = function () { 
 		temp2 = [];   
@@ -748,6 +778,8 @@ socket.onopen = function () {
 	};  
 	
 	socket.onmessage = function (event) {  
+	
+	
 		data = event.data;  
 		console.log('Received data: ' + event.data)
 		var data = JSON.parse(event.data);
@@ -908,12 +940,15 @@ socket.onopen = function () {
 		
 		if(data.json_id == 1) {
 			len = data.result.length;
-			
+			console.log("dr");
 			for(var i = 1; i < data.result.length + 1; i++) {
 				var request = ' {"json_id": "5", "sensor_id": '+  i.toString() + '} ';
 				socket.send(request); 
 				e++;
 			}
+			
+			
+			//setTimeout(req,50 );
 			
 			for(var i = 1; i < data.result.length + 1; i++) {		
 				socket.send(' {"json_id": "3","measures": 1,"sensor_id":' + i.toString() + '} ');  
@@ -950,6 +985,8 @@ socket.onopen = function () {
 			e = 0;
 			e1 = 0;
 			c = 0;
+			y = 0;
+			res = 0;
 			if(current == 1) {
 				createData(nam);
 				res = 2;
@@ -965,10 +1002,38 @@ socket.onopen = function () {
 	
 	socket.onclose = function () {       
 		console.log('Lost connection!');   
+		values =[];
+		stations = [];
+		size = 0;
+		size1 = 0;
+		size2 = 0;
+		temp2 = [];
+		temp = [];
+		x = 0;
+		x1 = 0;
+		len = 0;
+		e = 0;
+		e1 = 0;
+		c = 0;
+		y = 0;
+		res = 0;
 	};  
 	
 	socket.onerror = function () {       
 		console.log('errro!');   
+		values =[];
+		stations = [];
+		size = 0;
+		size1 = 0;
+		size2 = 0;
+		temp2 = [];
+		temp = [];
+		x = 0;
+		x1 = 0;
+		len = 0;
+		e = 0;
+		e1 = 0;
+		c = 0;
 	};
 }
 openSocket();
