@@ -1291,6 +1291,7 @@ function test() {
 
 	for (r in records)
 	{ 	
+		
  		records[r].timestamp = Date.parse(records[r].timestamp)
 	}
 	first = records[0].timestamp
@@ -1365,7 +1366,7 @@ function test() {
 
 
 
-      var x = d3.scaleUtc()
+      var x = d3.scaleTime()
         .domain(d3.extent(data, function(d) { return d.timestamp; }))
         .range([ 0, width ]);
       xAxis = svga.append("g").style("font-size","16px")
@@ -1443,6 +1444,7 @@ function test() {
 	    console.log(button_records.length)
             for (r in button_records)
             { 	
+				
                 button_records[r].timestamp = Date.parse(button_records[r].timestamp)
             }
 	    first_record = button_records[0].timestamp
@@ -1590,6 +1592,7 @@ function test() {
 
             for (r in new_records)
             { 	
+				
                 new_records[r].timestamp = Date.parse(new_records[r].timestamp)
 	    }
 
