@@ -1238,6 +1238,9 @@ function onDataClick() {
 	var searchbar3 = document.getElementById("page4");
 	searchbar3.style.display = "block";
 	test();
+	
+	document.getElementById("chartLabel1").innerHTML = localStorage['name1'] || "Hala 1";
+	document.getElementById("chartLabel2").innerHTML = localStorage['name2'] || "Hala 2";
 }
 
 /*function onButtonClick3() {
